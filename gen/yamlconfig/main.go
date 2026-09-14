@@ -107,6 +107,7 @@ type YamlConfigAttribute struct {
 	WriteOnly          bool                  `yaml:"write_only,omitempty"`
 	DataSourceOnly     bool                  `yaml:"data_source_only,omitempty"`
 	WriteChangesOnly   bool                  `yaml:"write_changes_only,omitempty"`
+	SendNullOnClear    bool                  `yaml:"send_null_on_clear,omitempty"`
 	Sensitive          bool                  `yaml:"sensitive,omitempty"`
 	WriteEmptyList     bool                  `yaml:"write_empty_list,omitempty"`
 	ExcludeTest        bool                  `yaml:"exclude_test,omitempty"`
@@ -153,6 +154,7 @@ type YamlConfigAttributeP struct {
 	WriteOnly          *bool                   `yaml:"write_only,omitempty"`
 	DataSourceOnly     *bool                   `yaml:"data_source_only,omitempty"`
 	WriteChangesOnly   *bool                   `yaml:"write_changes_only,omitempty"`
+	SendNullOnClear    *bool                   `yaml:"send_null_on_clear,omitempty"`
 	Sensitive          *bool                   `yaml:"sensitive,omitempty"`
 	WriteEmptyList     *bool                   `yaml:"write_empty_list,omitempty"`
 	ExcludeTest        *bool                   `yaml:"exclude_test,omitempty"`
@@ -697,6 +699,9 @@ func (attr *YamlConfigAttribute) Init(parentGoTypeName, parentGoTypeBulkName str
 		if attr.WriteChangesOnly {
 			return fmt.Errorf("%q: `data_source_only` cannot be combined with `write_changes_only`, since that only applies to the resource's PUT body diffing", attr.TfName)
 		}
+		if attr.SendNullOnClear {
+			return fmt.Errorf("%q: `data_source_only` cannot be combined with `send_null_on_clear`, since that only applies to the resource's PUT body clearing", attr.TfName)
+		}
 		if attr.WriteOnly {
 			return fmt.Errorf("%q: `data_source_only` cannot be combined with `write_only`, they are opposites (write-only means unreadable, data-source-only means unwritable)", attr.TfName)
 		}
@@ -983,6 +988,9 @@ func MergeYamlConfigAttribute(existing *YamlConfigAttributeP, new *YamlConfigAtt
 	}
 	if existing.WriteChangesOnly != nil {
 		new.WriteChangesOnly = existing.WriteChangesOnly
+	}
+	if existing.SendNullOnClear != nil {
+		new.SendNullOnClear = existing.SendNullOnClear
 	}
 	if existing.Sensitive != nil {
 		new.Sensitive = existing.Sensitive

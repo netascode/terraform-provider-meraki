@@ -36,7 +36,6 @@ func TestAccDataSourceMerakiSwitchOrganizationPortsProfilesAutomation(t *testing
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.meraki_switch_organization_ports_profiles_automation.test", "description", "A full length description of the automation."))
 	checks = append(checks, resource.TestCheckResourceAttr("data.meraki_switch_organization_ports_profiles_automation.test", "name", "Automation 1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.meraki_switch_organization_ports_profiles_automation.test", "assigned_switch_ports.0.port_ids.0", "3"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.meraki_switch_organization_ports_profiles_automation.test", "rules.0.priority", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.meraki_switch_organization_ports_profiles_automation.test", "rules.0.conditions.0.attribute", "LLDP system description"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.meraki_switch_organization_ports_profiles_automation.test", "rules.0.conditions.0.values.0", "Meraki MR*"))

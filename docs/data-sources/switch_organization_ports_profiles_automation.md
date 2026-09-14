@@ -47,7 +47,7 @@ data "meraki_switch_organization_ports_profiles_automation" "example" {
 
 Read-Only:
 
-- `port_ids` (List of String) List of port ids
+- `port_ids` (Set of String) List of port ids
 - `switch_serial` (String) Serial number of the switch
 
 

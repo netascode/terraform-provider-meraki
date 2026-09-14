@@ -50,7 +50,7 @@ type DataSourceSwitchOrganizationPortsProfilesAutomationsItems struct {
 
 type DataSourceSwitchOrganizationPortsProfilesAutomationsAssignedSwitchPorts struct {
 	SwitchSerial types.String `tfsdk:"switch_serial"`
-	PortIds      types.List   `tfsdk:"port_ids"`
+	PortIds      types.Set    `tfsdk:"port_ids"`
 }
 
 type DataSourceSwitchOrganizationPortsProfilesAutomationsRules struct {
@@ -114,9 +114,9 @@ func (data *DataSourceSwitchOrganizationPortsProfilesAutomations) fromBody(ctx c
 					data.SwitchSerial = types.StringNull()
 				}
 				if value := res.Get("portIds"); value.Exists() && value.Value() != nil {
-					data.PortIds = helpers.GetStringList(value.Array())
+					data.PortIds = helpers.GetStringSet(value.Array())
 				} else {
-					data.PortIds = types.ListNull(types.StringType)
+					data.PortIds = types.SetNull(types.StringType)
 				}
 				(*parent).AssignedSwitchPorts = append((*parent).AssignedSwitchPorts, data)
 				return true

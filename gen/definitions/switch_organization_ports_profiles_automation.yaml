@@ -28,12 +28,14 @@ attributes:
   - model_name: id
     type: String
     data_path: [fallbackProfile]
+    send_null_on_clear: true
     exclude_test: true
     description: Default port profile Id
     example: "1284392014819"
   - model_name: name
     type: String
     data_path: [fallbackProfile]
+    send_null_on_clear: true
     exclude_test: true
     description: Default port profile name
     example: Profile 1
@@ -48,7 +50,7 @@ attributes:
         example: Q234-ABCD-5678
         test_value: tolist(meraki_network_device_claim.test.serials)[0]
       - model_name: portIds
-        type: List
+        type: Set
         element_type: String
         description: List of port ids
         example: "3"

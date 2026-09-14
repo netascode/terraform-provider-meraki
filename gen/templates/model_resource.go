@@ -179,7 +179,9 @@ func (data {{camelCase .Name}}) toBody(ctx context.Context, state {{camelCase .N
 	{{- else if or (eq .Type "String") (eq .Type "Int64") (eq .Type "Float64") (eq .Type "Bool")}}
 	if !data.{{toGoName .TfName}}.IsNull() {{if .WriteChangesOnly}}&& data.{{toGoName .TfName}} != state.{{toGoName .TfName}}{{end}} {
 		body, _ = sjson.Set(body, "{{getFullModelName . true}}", data.{{toGoName .TfName}}.Value{{.Type}}())
-	}
+	}{{if .SendNullOnClear}} else if !state.{{toGoName .TfName}}.IsNull() {
+		body, _ = sjson.Set(body, "{{getFullModelName . true}}", nil)
+	}{{end}}
 	{{- else if isListSet .}}
 	if !data.{{toGoName .TfName}}.IsNull() {
 		var values []{{if isStringListSet .}}string{{else if isInt64ListSet .}}int64{{end}}

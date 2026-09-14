@@ -91,7 +91,7 @@ Required:
 
 Optional:
 
-- `port_ids` (List of String) List of port ids
+- `port_ids` (Set of String) List of port ids
 - `switch_serial` (String) Serial number of the switch
 
 ## Import

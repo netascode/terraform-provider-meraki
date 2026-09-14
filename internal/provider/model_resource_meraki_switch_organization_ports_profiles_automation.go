@@ -50,7 +50,7 @@ type SwitchOrganizationPortsProfilesAutomation struct {
 
 type SwitchOrganizationPortsProfilesAutomationAssignedSwitchPorts struct {
 	SwitchSerial types.String `tfsdk:"switch_serial"`
-	PortIds      types.List   `tfsdk:"port_ids"`
+	PortIds      types.Set    `tfsdk:"port_ids"`
 }
 
 type SwitchOrganizationPortsProfilesAutomationRules struct {
@@ -92,9 +92,13 @@ func (data SwitchOrganizationPortsProfilesAutomation) toBody(ctx context.Context
 	}
 	if !data.FallbackProfileId.IsNull() {
 		body, _ = sjson.Set(body, "fallbackProfile.id", data.FallbackProfileId.ValueString())
+	} else if !state.FallbackProfileId.IsNull() {
+		body, _ = sjson.Set(body, "fallbackProfile.id", nil)
 	}
 	if !data.FallbackProfileName.IsNull() {
 		body, _ = sjson.Set(body, "fallbackProfile.name", data.FallbackProfileName.ValueString())
+	} else if !state.FallbackProfileName.IsNull() {
+		body, _ = sjson.Set(body, "fallbackProfile.name", nil)
 	}
 	if len(data.AssignedSwitchPorts) > 0 {
 		body, _ = sjson.Set(body, "assignedSwitchPorts", []interface{}{})
@@ -181,9 +185,9 @@ func (data *SwitchOrganizationPortsProfilesAutomation) fromBody(ctx context.Cont
 				data.SwitchSerial = types.StringNull()
 			}
 			if value := res.Get("portIds"); value.Exists() && value.Value() != nil {
-				data.PortIds = helpers.GetStringList(value.Array())
+				data.PortIds = helpers.GetStringSet(value.Array())
 			} else {
-				data.PortIds = types.ListNull(types.StringType)
+				data.PortIds = types.SetNull(types.StringType)
 			}
 			(*parent).AssignedSwitchPorts = append((*parent).AssignedSwitchPorts, data)
 			return true
@@ -305,9 +309,9 @@ func (data *SwitchOrganizationPortsProfilesAutomation) fromBodyPartial(ctx conte
 			data.SwitchSerial = types.StringNull()
 		}
 		if value := res.Get("portIds"); value.Exists() && !data.PortIds.IsNull() {
-			data.PortIds = helpers.GetStringList(value.Array())
+			data.PortIds = helpers.GetStringSet(value.Array())
 		} else {
-			data.PortIds = types.ListNull(types.StringType)
+			data.PortIds = types.SetNull(types.StringType)
 		}
 		(*parent).AssignedSwitchPorts[i] = data
 	}

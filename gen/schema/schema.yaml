@@ -49,6 +49,7 @@ attribute:
   write_only: bool(required=False) # Set to true if the attribute is write-only, meaning we cannot read the value
   data_source_only: bool(required=False) # Set to true if the attribute should only be present in the data source, not the resource (e.g. GET-only detail not accepted by the PUT/POST body). Cascades to nested attributes.
   write_changes_only: bool(required=False) # Set to true if the attribute should only be written (included in PUT payload) if it has changed
+  send_null_on_clear: bool(required=False) # Set to true if a null value in the plan (field removed from config) should be sent as JSON null to the API, clearing the field. Without this, omitting the field from the PUT body leaves the API value unchanged.
   sensitive: bool(required=False)  # Set to true if the attribute is sensitive, meaning it should not show up in clear-text in plan and logs
   write_empty_list: bool(required=False) # Set to true if the attribute should be written as an empty list if it is not set, only relevant if type is "List" or "Set"
   exclude_test: bool(required=False) # Exclude attribute from example (documentation) and acceptance test
